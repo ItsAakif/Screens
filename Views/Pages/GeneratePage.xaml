@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Screens.WinUI.Views.Pages.GeneratePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="40">
+        <StackPanel Spacing="16">
+            <TextBlock Text="Generate Wallpapers"
+                       Style="{StaticResource SubheaderTextStyle}"/>
+
+            <TextBlock Text="AI wallpaper generation coming soon!"
+                       Style="{StaticResource BodyTextStyle}"/>
+        </StackPanel>
+    </Grid>
+</Page>

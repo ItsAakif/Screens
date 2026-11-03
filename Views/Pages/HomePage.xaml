@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Screens.WinUI.Views.Pages.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Screens.WinUI.Models"
+    mc:Ignorable="d"
+    x:Name="PageRoot">
+
+    <Grid Padding="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Page Header (non-scrolling) -->
+        <Border Grid.Row="0"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                Padding="40,32,40,24">
+            <TextBlock Text="Home"
+                       Style="{StaticResource SubheaderTextStyle}"
+                       FontSize="28"
+                       FontWeight="SemiBold"/>
+        </Border>
+
+        <!-- Loading Progress -->
+        <ProgressRing x:Name="LoadingRing"
+                      Grid.Row="1"
+                      Width="48"
+                      Height="48"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsActive="True"/>
+
+        <!-- Scrollable Wallpapers Grid -->
+        <ScrollViewer Grid.Row="1"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <GridView x:Name="WallpapersGrid"
+                      ItemsSource="{x:Bind ViewModel.Wallpapers, Mode=OneWay}"
+                      SelectionMode="None"
+                      Padding="32,0,32,32"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"
+                                       MaximumRowsOrColumns="6"
+                                       HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Wallpaper">
+                        <Border Width="240"
+                                Height="340"
+                                Background="{ThemeResource CardFillColorDefaultBrush}"
+                                CornerRadius="12"
+                                Margin="6">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Image -->
+                                <Image Grid.Row="0"
+                                       Source="{x:Bind ImageUrl}"
+                                       Stretch="UniformToFill"/>
+
+                                <!-- Live Wallpaper Badge -->
+                                <Border Grid.Row="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Background="#A83636"
+                                        CornerRadius="8"
+                                        Padding="8,4"
+                                        Margin="8"
+                                        Visibility="{x:Bind IsLiveWallpaper, Mode=OneWay}">
+                                    <TextBlock Text="LIVE"
+                                               Style="{StaticResource CaptionTextStyle}"
+                                               Foreground="White"
+                                               FontSize="10"
+                                               FontWeight="SemiBold"/>
+                                </Border>
+
+                                <!-- Content -->
+                                <Border Grid.Row="1"
+                                        Background="{ThemeResource CardFillColorSecondaryBrush}"
+                                        Padding="12">
+                                    <StackPanel Spacing="8">
+                                        <TextBlock Text="{x:Bind Title}"
+                                                   Style="{StaticResource BodyTextStyle}"
+                                                   FontWeight="SemiBold"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   MaxLines="1"/>
+
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <TextBlock Text="{x:Bind Category}"
+                                                       Style="{StaticResource CaptionTextStyle}"/>
+                                            <TextBlock Text="•"
+                                                       Style="{StaticResource CaptionTextStyle}"/>
+                                            <TextBlock Text="{x:Bind Dimensions}"
+                                                       Style="{StaticResource CaptionTextStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <Button Content="Desktop"
+                                                    Command="{Binding DataContext.SetAsDesktopWallpaperCommand, ElementName=PageRoot}"
+                                                    CommandParameter="{x:Bind}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Margin="0,0,2,0"
+                                                    Style="{StaticResource AccentButtonStyle}"/>
+                                            <Button Content="Lock"
+                                                    Command="{Binding DataContext.SetAsLockScreenCommand, ElementName=PageRoot}"
+                                                    CommandParameter="{x:Bind}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Margin="0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Screens.WinUI.Views.Pages.ExplorePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Screens.WinUI.Models"
+    mc:Ignorable="d"
+    x:Name="PageRoot">
+
+    <Grid Padding="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Page Header -->
+        <Border Grid.Row="0"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                Padding="40,32,40,24">
+            <TextBlock Text="Explore"
+                       Style="{StaticResource SubheaderTextStyle}"
+                       FontSize="28"
+                       FontWeight="SemiBold"/>
+        </Border>
+
+        <!-- Filters -->
+        <Border Grid.Row="1"
+                Background="{ThemeResource CardFillColorDefaultBrush}"
+                Padding="24"
+                Margin="40,0,40,16">
+            <Grid ColumnSpacing="12" RowSpacing="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="SearchBox"
+                         Grid.Row="0"
+                         Grid.Column="0"
+                         Header="Search"
+                         PlaceholderText="Search wallpapers..."
+                         TextChanged="SearchBox_TextChanged"/>
+
+                <ComboBox x:Name="CategoryComboBox"
+                          Grid.Row="0"
+                          Grid.Column="1"
+                          Header="Category"
+                          SelectionChanged="CategoryComboBox_SelectionChanged"/>
+
+                <StackPanel Grid.Row="0"
+                            Grid.Column="2"
+                            Grid.RowSpan="2"
+                            Orientation="Horizontal"
+                            Spacing="8"
+                            VerticalAlignment="Bottom">
+                    <Button Content="Search"
+                            Click="SearchButton_Click"
+                            Style="{StaticResource AccentButtonStyle}"/>
+                    <Button Content="Refresh"
+                            Click="RefreshButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Loading -->
+        <ProgressRing x:Name="LoadingRing"
+                      Grid.Row="2"
+                      Width="48"
+                      Height="48"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsActive="True"/>
+
+        <!-- Wallpapers Grid -->
+        <ScrollViewer Grid.Row="2"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <GridView x:Name="WallpapersGrid"
+                      SelectionMode="None"
+                      Padding="32,0,32,32"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"
+                                       MaximumRowsOrColumns="6"
+                                       HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Wallpaper">
+                        <Border Width="240"
+                                Height="340"
+                                Background="{ThemeResource CardFillColorDefaultBrush}"
+                                CornerRadius="12"
+                                Margin="6">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Image -->
+                                <Image Grid.Row="0"
+                                       Source="{x:Bind ImageUrl}"
+                                       Stretch="UniformToFill"/>
+
+                                <!-- Live Wallpaper Badge -->
+                                <Border Grid.Row="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Background="#A83636"
+                                        CornerRadius="8"
+                                        Padding="8,4"
+                                        Margin="8"
+                                        Visibility="{x:Bind IsLiveWallpaper, Mode=OneWay}">
+                                    <TextBlock Text="GIF"
+                                               Style="{StaticResource CaptionTextStyle}"
+                                               Foreground="White"
+                                               FontSize="10"
+                                               FontWeight="SemiBold"/>
+                                </Border>
+
+                                <!-- Content -->
+                                <Border Grid.Row="1"
+                                        Background="{ThemeResource CardFillColorSecondaryBrush}"
+                                        Padding="12">
+                                    <StackPanel Spacing="8">
+                                        <TextBlock Text="{x:Bind Title}"
+                                                   Style="{StaticResource BodyTextStyle}"
+                                                   FontWeight="SemiBold"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   MaxLines="1"/>
+
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <TextBlock Text="{x:Bind Category}"
+                                                       Style="{StaticResource CaptionTextStyle}"/>
+                                            <TextBlock Text="•"
+                                                       Style="{StaticResource CaptionTextStyle}"/>
+                                            <TextBlock Text="{x:Bind Dimensions}"
+                                                       Style="{StaticResource CaptionTextStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Spacing="4">
+                                            <Button Content="Desktop"
+                                                    Command="{Binding DataContext.SetAsDesktopWallpaperCommand, ElementName=PageRoot}"
+                                                    CommandParameter="{x:Bind}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Margin="0,0,2,0"
+                                                    Style="{StaticResource AccentButtonStyle}"/>
+                                            <Button Content="Lock"
+                                                    Command="{Binding DataContext.SetAsLockScreenCommand, ElementName=PageRoot}"
+                                                    CommandParameter="{x:Bind}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Margin="0,0,2,0"/>
+                                            <Button Content="Preview"
+                                                    Command="{Binding DataContext.PreviewWallpaperCommand, ElementName=PageRoot}"
+                                                    CommandParameter="{x:Bind}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Margin="0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </ScrollViewer>
+    </Grid>
+</Page>

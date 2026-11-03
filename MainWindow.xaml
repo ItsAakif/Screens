@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Screens.WinUI.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    Title="Screens">
+
+    <Grid>
+        <muxc:NavigationView x:Name="NavView"
+                             SelectionChanged="NavigationView_SelectionChanged"
+                             IsBackEnabled="False"
+                             IsSettingsVisible="False"
+                             IsPaneOpen="True"
+                             PaneDisplayMode="Left"
+                             OpenPaneLength="280"
+                             CompactPaneLength="48"
+                             Background="{ThemeResource LayerFillColorDefaultBrush}"
+                             IsBackButtonVisible="Collapsed"
+                             IsPaneToggleButtonVisible="False"
+                             IsTitleBarAutoPaddingEnabled="False">
+
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem x:Name="NavHome" Tag="home">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE80F;" FontSize="16"/>
+                    </muxc:NavigationViewItem.Icon>
+                    <muxc:NavigationViewItem.Content>
+                        <TextBlock Text="Home" Style="{StaticResource BodyTextStyle}"/>
+                    </muxc:NavigationViewItem.Content>
+                </muxc:NavigationViewItem>
+
+                <muxc:NavigationViewItem x:Name="NavExplore" Tag="explore">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE80B;" FontSize="16"/>
+                    </muxc:NavigationViewItem.Icon>
+                    <muxc:NavigationViewItem.Content>
+                        <TextBlock Text="Explore" Style="{StaticResource BodyTextStyle}"/>
+                    </muxc:NavigationViewItem.Content>
+                </muxc:NavigationViewItem>
+
+                <muxc:NavigationViewItem x:Name="NavFavorites" Tag="favorites">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE8D7;" FontSize="16"/>
+                    </muxc:NavigationViewItem.Icon>
+                    <muxc:NavigationViewItem.Content>
+                        <TextBlock Text="Favorites" Style="{StaticResource BodyTextStyle}"/>
+                    </muxc:NavigationViewItem.Content>
+                </muxc:NavigationViewItem>
+
+                <muxc:NavigationViewItem x:Name="NavHistory" Tag="history">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE81C;" FontSize="16"/>
+                    </muxc:NavigationViewItem.Icon>
+                    <muxc:NavigationViewItem.Content>
+                        <TextBlock Text="History" Style="{StaticResource BodyTextStyle}"/>
+                    </muxc:NavigationViewItem.Content>
+                </muxc:NavigationViewItem>
+
+                <muxc:NavigationViewItem x:Name="NavSettings" Tag="settings">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE713;" FontSize="16"/>
+                    </muxc:NavigationViewItem.Icon>
+                    <muxc:NavigationViewItem.Content>
+                        <TextBlock Text="Settings" Style="{StaticResource BodyTextStyle}"/>
+                    </muxc:NavigationViewItem.Content>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.MenuItems>
+
+            <muxc:NavigationView.PaneFooter>
+                <Button x:Name="TogglePaneButton"
+                        Click="TogglePaneButton_Click"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="12"
+                        Margin="12,0,12,12"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
+                        ToolTipService.ToolTip="Toggle menu">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <FontIcon Glyph="&#xE700;" FontSize="16"/>
+                        <TextBlock Text="Collapse" x:Name="TogglePaneText"/>
+                    </StackPanel>
+                </Button>
+            </muxc:NavigationView.PaneFooter>
+
+            <muxc:NavigationView.Content>
+                <Grid>
+                    <Frame x:Name="ContentFrame"/>
+                </Grid>
+            </muxc:NavigationView.Content>
+        </muxc:NavigationView>
+    </Grid>
+
+</Window>
